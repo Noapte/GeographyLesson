@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-
+    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
     <style>
         .carousel-inner > .item > img,
         .carousel-inner > .item > a > img {
@@ -82,13 +82,39 @@
         </a>
     </div>
 </div>
-<div id="canvas">
-    <div id="logger"></div>
-    <canvas id="myCanvas" style=" margin:20px" width="400" height="400"></canvas>
+
+<div id="logger"></div>
+<div id="num">new number</div>
+<button id="nextNumber" onclick="nextNumber()">start</button>
+<br/>
+<span style="max-height:100px" id="info">blee</span>
+<br/>
+<div class="alert alert-success" role="alert">
+    <a href="#" class="alert-link">...</a>
 </div>
 
-<script>
+<div class="alert alert-danger" role="alert">
 
+</div>
+<canvas id="myCanvas" style=" margin:20px" width="400" height="400"></canvas>
+
+
+<script>
+    var newNumber = 0;
+    var numbers=[];
+    function nextNumber() {
+      //  alert(numbers.indexOf(1));
+        newNumber = Math.floor((Math.random() * 4) + 1);
+        while(numbers.indexOf(newNumber) !== -1){
+
+                newNumber = Math.floor((Math.random() * 4) + 1);
+
+
+        }
+
+
+        $('#num').text(newNumber);
+    }
     var canvas = document.getElementById('myCanvas');
     context = canvas.getContext("2d");
 
@@ -104,9 +130,7 @@
     img.src = '4.jpg';
     img.onload = function () {
         context.drawImage(img, 0, 0, width, height);
-
         context.beginPath();
-
         context.lineWidth = 1;
         context.strokeStyle = '#ff0000'
         context.strokeRect(0, 0, width / 2, height / 2);
@@ -117,42 +141,75 @@
         context.stroke();
     }
 
-
     $('#myCanvas').mousemove(function (event) {
 
         canvasMouseX = event.clientX - (canvas.offsetLeft - window.pageXOffset);
         canvasMouseY = event.clientY - (canvas.offsetTop - window.pageYOffset);
-        $('#logger').text(canvasMouseX + "   " + canvasMouseY);
-        if (canvasMouseX > 0 && canvasMouseX < width / 2 && canvasMouseY > 0 && canvasMouseY < height / 2) {
-            context.drawImage(imgBlurred, 0, 0, imgBlurredW / 2, imgBlurredH / 2, 0, 0, width / 2, height / 2);
-        }
-        if (canvasMouseX > width / 2 && canvasMouseX < width && canvasMouseY > 0 && canvasMouseY < height / 2) {
-            context.drawImage(imgBlurred, imgBlurredW / 2, 0, imgBlurredW, imgBlurredH / 2, width / 2, 0, width, height / 2);
-        }
-        if (canvasMouseX > 0 && canvasMouseX < width / 2 && canvasMouseY > height / 2 && canvasMouseY < height) {
-            context.drawImage(imgBlurred, 0, imgBlurredH / 2, imgBlurredW / 2, imgBlurredH, 0, height / 2, width / 2, height);
-        }
-        if (canvasMouseX > width / 2 && canvasMouseX < width && canvasMouseY > height / 2 && canvasMouseY < height) {
-            context.drawImage(imgBlurred, imgBlurredW / 2, imgBlurredH / 2, imgBlurredW, imgBlurredH, width / 2, height / 2, width, height);
-        }
-
-
+        //  $('#logger').text(canvasMouseX + "   " + canvasMouseY);
     });
-
 
     $('#myCanvas').mousedown(function (event) {
 
         if (canvasMouseX > 0 && canvasMouseX < width / 2 && canvasMouseY > 0 && canvasMouseY < height / 2) {
-            context.drawImage(imgBlurred, 0, 0, imgBlurredW / 2, imgBlurredH / 2, 0, 0, width / 2, height / 2);
+            if (newNumber === 1) {
+             //   alert("ok");
+                numbers.push(newNumber);
+
+                context.drawImage(imgBlurred, 0, 0, imgBlurredW / 2, imgBlurredH / 2, 0, 0, width / 2, height / 2);
+                if (numbers.length === 4) {
+
+                    alert('gratulacje !!!!');
+                    $('#nextNumber').attr('disabled', true);
+                    $('#num').text("");
+                }
+            } else {
+               // alert("niet :(");
+            }
         }
         if (canvasMouseX > width / 2 && canvasMouseX < width && canvasMouseY > 0 && canvasMouseY < height / 2) {
-            context.drawImage(imgBlurred, imgBlurredW / 2, 0, imgBlurredW, imgBlurredH / 2, width / 2, 0, width, height / 2);
+            if (newNumber === 2) {
+                numbers.push(newNumber);
+                //   alert("ok");
+                context.drawImage(imgBlurred, imgBlurredW / 2, 0, imgBlurredW, imgBlurredH / 2, width / 2, 0, width, height / 2);
+                if (numbers.length === 4) {
+
+                alert('gratulacje !!!!');
+                $('#nextNumber').attr('disabled', true);
+                $('#num').text("");
+            }
+            } else {
+             //   alert("niet :(");
+            }
         }
         if (canvasMouseX > 0 && canvasMouseX < width / 2 && canvasMouseY > height / 2 && canvasMouseY < height) {
-            context.drawImage(imgBlurred, 0, imgBlurredH / 2, imgBlurredW / 2, imgBlurredH, 0, height / 2, width / 2, height);
+            if (newNumber === 3) {
+                numbers.push(newNumber);
+               // alert("ok");
+                context.drawImage(imgBlurred, 0, imgBlurredH / 2, imgBlurredW / 2, imgBlurredH, 0, height / 2, width / 2, height);
+                if (numbers.length === 4) {
+
+                    alert('gratulacje !!!!');
+                    $('#nextNumber').attr('disabled', true);
+                    $('#num').text("");
+                }
+            } else {
+                //alert("niet :(");
+            }
         }
         if (canvasMouseX > width / 2 && canvasMouseX < width && canvasMouseY > height / 2 && canvasMouseY < height) {
-            context.drawImage(imgBlurred, imgBlurredW / 2, imgBlurredH / 2, imgBlurredW, imgBlurredH, width / 2, height / 2, width, height);
+            if (newNumber === 4) {
+                numbers.push(newNumber);
+              //  alert("ok");
+                context.drawImage(imgBlurred, imgBlurredW / 2, imgBlurredH / 2, imgBlurredW, imgBlurredH, width / 2, height / 2, width, height);
+                if (numbers.length === 4) {
+
+                    alert('gratulacje !!!!');
+                    $('#nextNumber').attr('disabled', true);
+                    $('#num').text("");
+                }
+            } else {
+              //  alert("niet :(");
+            }
         }
     });
 
