@@ -12,7 +12,7 @@
 <canvas id="belarus" style=" position:absolute; margin:20px" width="400" height="400"></canvas>
 <canvas id="moldova" style=" position:absolute; margin:20px" width="400" height="400"></canvas>
 <canvas id="ukraina" style=" position:absolute; margin:20px" width="400" height="400"></canvas>
-<p id="canText" style="background-color:transparent; border-color:transparent; font-size:20px" type="text"/>
+<p id="canText" type="text"></p>
 
 <script>
     function addImageToCanvas(country) {
@@ -28,16 +28,17 @@
             context.stroke();
         }
     }
-    function getImage(name){
+    function getImage(name) {
         var img = new Image();
         img.src = name + '.png';
         return img;
     }
-    function getContext(name){
+    function getContext(name) {
         var canvas = document.getElementById(name);
         return canvas.getContext("2d");
     }
 
+    var images = [];
     var canvas = document.getElementById('myCanvas');
     var context = canvas.getContext("2d");
     var img = new Image();
@@ -50,10 +51,12 @@
     var height = 400;
     addImageToCanvas('moldova');
     addImageToCanvas('romania');
-    var imageMoldova = getImage('moldova');
-    var imageRomania = getImage('romania');
-    var contextMoldova = getContext('moldova');
-    var contextRomania = getContext('romania');
+    addImageToCanvas('bulgaria');
+    addImageToCanvas('russia');
+    images.push({img: getImage('moldova'), context: getContext('moldova')});
+    images.push({img: getImage('romania'), context: getContext('romania')});
+    images.push({img: getImage('bulgaria'), context: getContext('bulgaria')});
+    images.push({img: getImage('russia'), context: getContext('russia')});
 
     img.onload = function () {
         context.drawImage(img, 0, 0, img.width, img.height);
@@ -68,23 +71,13 @@
         canvasMouseY = event.clientY - (canvas.offsetTop - window.pageYOffset);
         if (onClick) {
 
-            var alpha2 = {
-                alpha: contextMoldova.getImageData(canvasMouseX, canvasMouseY, 1, 1).data[3],
-                img: imageMoldova
-            };
-            var alpha3 = {
-                alpha: contextRomania.getImageData(canvasMouseX, canvasMouseY, 1, 1).data[3],
-                img: imageRomania
-            };
-            var alphas = [];
-            alphas.push(alpha2);
-            alphas.push(alpha3);
-            var ret = alphas.filter(function (data) {
-                return data.alpha !== 0
+            var onMouse = images.filter(function (data) {
+                return data.context.getImageData(canvasMouseX, canvasMouseY, 1, 1).data[3] !== 0;
             });
-            if (ret[0] !== undefined) {
+
+            if (onMouse[0] !== undefined) {
                 context.drawImage(img, 0, 0, img.width, img.height);
-                context.drawImage(ret[0].img, 0, 0, ret[0].img.width, ret[0].img.height);
+                context.drawImage(onMouse[0].img, 0, 0, onMouse[0].img.width, onMouse[0].img.height);
             } else {
                 context.drawImage(img, 0, 0, img.width, img.height);
             }
@@ -93,7 +86,6 @@
 
     $('#myCanvas').mousedown(function (event) {
         onClick = !onClick;
-
     });
 
 
