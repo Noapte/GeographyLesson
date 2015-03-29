@@ -1,6 +1,6 @@
-romania
-moldova
-belarus
-bulgaria
-russia
-ukraina
+﻿Rumunia
+Mołdawia
+Białoruś
+Bułgaria
+Rosja
+Ukraina
