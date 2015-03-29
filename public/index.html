@@ -1,100 +1,116 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta http-equiv="Content-type" content="text/html; charset=ISO-8859-2" />
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>    
-</head>
-<body>
-<canvas id="myCanvas" style=" margin:20px" width="400" height="400"></canvas>
-<p id="canText" type="text"></p>
-<div id="myModal" class="modal fade">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 id="countryId" class="modal-title">Confirmation</h4>
-            </div>
-            <div class="modal-body">
-                <p>BLE?</p>
+    <head>
+        <meta http-equiv="Content-type" content="text/html; charset=ISO-8859-2" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+                <button id="checkCountry" style="display:inline-block" onclick="nextCountry()">check country</button>
+              <div id="canText" style="display:block; max-height:100px" type="text"></div>
+        <canvas id="myCanvas" style="margin:20px; display:inline-block" width="400" height="400"></canvas>
+
+          <div id="myModal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 id="countryId" class="modal-title">Confirmation</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>BLE?</p>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
-<script>
-    var countries = [];
-    $(document).ready(function () {
-
-         $.ajax({
-            url: "countries.txt",
-            dataType: "text",
-            success: function (data) {
-                countries = data.split('\r\n');
-                countries.forEach(function (data) {
-                    var canvas = document.createElement("canvas");
-                    var context = canvas.getContext("2d");
-                    var img = new Image();
-                    img.src = data + '.png';
-                    canvas.height = img.height;
-                    canvas.width = img.width;
-                    img.onload = function () {
-                        context.drawImage(img, 0, 0, img.width, img.height);
-                        context.fill();
-                        context.stroke();
+        <script>
+            var countries = [];
+             var newCountry = "";
+             var test = [];
+            $(document).ready(function () {
+                $.ajax({
+                    url: "countries.txt",
+                    dataType: "text",
+                    success: function (data) {
+                        countries = data.split('\r\n');
+                        countries.forEach(function (data) {
+                            var canvas = document.createElement("canvas");
+                            var context = canvas.getContext("2d");
+                            var img = new Image();
+                            img.src = data + '.png';
+                            canvas.height = img.height;
+                            canvas.width = img.width;
+                            img.onload = function () {
+                                context.drawImage(img, 0, 0, img.width, img.height);
+                                context.fill();
+                                context.stroke();
+                            }
+                            images.push({img: getImage(data), context: canvas.getContext("2d"), name: data});
+                        });
                     }
-                    images.push({img: getImage(data), context: canvas.getContext("2d"), name: data});
                 });
-            }
-        });
-    });
-    function getImage(name) {
-        var img = new Image();
-        img.src = 'http://localhost:4567/' + name + '.png';
-        return img;
-    }
-    var images = [];
-    var onMouse;
-    var canvas = document.getElementById('myCanvas');
-    var context = canvas.getContext("2d");
-    var img = new Image();
-    img.src = 'http://localhost:4567/map_origin.png';
-    canvas.height = img.height;
-    canvas.width = img.width;
-    var canvasMouseX;
-    var canvasMouseY;
-    var width = 400;
-    var height = 400;
-    //img.onload = function () {
-    context.drawImage(img, 0, 0, img.width, img.height);
-    context.fill();
-    context.stroke();
-    //   }
-    var onClick = true;
-    $('#myCanvas').mousemove(function (event) {
-        canvasMouseX = event.clientX - (canvas.offsetLeft - window.pageXOffset);
-        canvasMouseY = event.clientY - (canvas.offsetTop - window.pageYOffset);
-        if (onClick) {
-            onMouse = images.filter(function (data) {
-                return data.context.getImageData(canvasMouseX, canvasMouseY, 1, 1).data[3] !== 0;
             });
-            if (onMouse[0] !== undefined) {
-                context.drawImage(img, 0, 0, img.width, img.height);
-                context.drawImage(onMouse[0].img, 0, 0, onMouse[0].img.width, onMouse[0].img.height);
 
-            } else {
-                context.drawImage(img, 0, 0, img.width, img.height);
-            }
+function nextCountry(){
+    
+    var length = countries.length;
+    newCountry =countries[Math.floor(Math.random() * length)];
+
+if(test.length !==  countries.length ){
+    while(test.indexOf(newCountry) !== -1 ){
+         newCountry = countries[Math.floor(Math.random() * length)];
         }
-    });
-    $('#myCanvas').mousedown(function (event) {
-        if(onClick && onMouse[0].name !== undefined){
-                                     $("#countryId").text(onMouse[0].name);
-              $("#myModal").modal('show');
-          }
-       // onClick = !onClick;
-    });
-</script>
-</body>
+}else {alert("wygrana")}
+
+    $("#canText").text(newCountry);
+}
+            function getImage(name) {
+                var img = new Image();
+                img.src = 'http://localhost:4567/' + name + '.png';
+                return img;
+            }
+            var images = [];
+            var onMouse;
+            var canvas = document.getElementById('myCanvas');
+            var context = canvas.getContext("2d");
+            var img = new Image();
+            img.src = 'http://localhost:4567/map_origin.png';
+            canvas.height = img.height;
+            canvas.width = img.width;
+            var canvasMouseX;
+            var canvasMouseY;
+            context.drawImage(img, 0, 0, img.width, img.height);
+            context.fill();
+            context.stroke();
+            var onClick = true; //maybe unused
+            $('#myCanvas').mousemove(function (event) {
+                canvasMouseX = event.clientX - (canvas.offsetLeft - window.pageXOffset);
+                canvasMouseY = event.clientY - (canvas.offsetTop - window.pageYOffset);
+                if (onClick) {
+                    onMouse = images.filter(function (data) {
+                        return data.context.getImageData(canvasMouseX, canvasMouseY, 1, 1).data[3] !== 0;
+                    });
+                    if (onMouse[0] !== undefined) {
+                        context.drawImage(img, 0, 0, img.width, img.height);
+                        context.drawImage(onMouse[0].img, 0, 0, onMouse[0].img.width, onMouse[0].img.height);
+                    } else {
+                        context.drawImage(img, 0, 0, img.width, img.height);
+                    }
+                }
+            });
+            $('#myCanvas').mousedown(function (event) {
+                if(onClick && onMouse[0].name !== undefined){
+                    if(onMouse[0].name === newCountry){
+                        test.push(newCountry);
+                        alert("ok");
+                        nextCountry();
+                    }
+                   // $("#countryId").text(onMouse[0].name);
+                   // $("#myModal").modal('show');
+                }
+            });
+        </script>
+    </body>
 </html>
