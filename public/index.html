@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+
+</head>
+<body>
+<canvas id="myCanvas" style=" margin:20px" width="400" height="400"></canvas>
+<canvas id="bulgaria" style=" position:absolute; margin:20px" width="400" height="400"></canvas>
+<canvas id="romania" style=" position:absolute; margin:20px" width="400" height="400"></canvas>
+<canvas id="russia" style=" position:absolute; margin:20px" width="400" height="400"></canvas>
+<canvas id="belarus" style=" position:absolute; margin:20px" width="400" height="400"></canvas>
+<canvas id="moldova" style=" position:absolute; margin:20px" width="400" height="400"></canvas>
+<canvas id="ukraina" style=" position:absolute; margin:20px" width="400" height="400"></canvas>
+<p id="canText" type="text"></p>
+
+  
+  <script>
+  var countries = [];
+  $(document).ready(function() {
+
+       $.ajax({
+           url : "countries.txt",
+           dataType: "text",
+           success : function (data) {
+            countries = data.split('\r\n');
+               $("#canText").text(data);
+                   countries.forEach(function(data){
+        addImageToCanvas(data);
+  images.push({img: getImage(data), context: getContext(data)});
+
+    });
+           }
+       });
+
+}); 
+    function addImageToCanvas(country) {
+        var canvas = document.getElementById(country);
+        var context = canvas.getContext("2d");
+        var img = new Image();
+        img.src = country + '.png';
+        canvas.height = img.height;
+        canvas.width = img.width;
+        img.onload = function () {
+            context.drawImage(img, 0, 0, img.width, img.height);
+            context.fill();
+            context.stroke();
+        }
+    }
+    function getImage(name) {
+        var img = new Image();
+        img.src = 'http://localhost:4567/' + name + '.png';
+        return img;
+    }
+    function getContext(name) {
+        var canvas = document.getElementById(name);
+        return canvas.getContext("2d");
+    }
+
+    var images = [];
+    var canvas = document.getElementById('myCanvas');
+    var context = canvas.getContext("2d");
+    var img = new Image();
+    img.src = 'http://localhost:4567/map_origin.png';
+    canvas.height = img.height;
+    canvas.width = img.width;
+    var canvasMouseX;
+    var canvasMouseY;
+    var width = 400;
+    var height = 400;
+
+
+
+    //img.onload = function () {
+        context.drawImage(img, 0, 0, img.width, img.height);
+        context.fill();
+        context.stroke();
+ //   }
+    var onClick = true;
+
+    $('#myCanvas').mousemove(function (event) {
+
+        canvasMouseX = event.clientX - (canvas.offsetLeft - window.pageXOffset);
+        canvasMouseY = event.clientY - (canvas.offsetTop - window.pageYOffset);
+        if (onClick) {
+
+            var onMouse = images.filter(function (data) {
+                return data.context.getImageData(canvasMouseX, canvasMouseY, 1, 1).data[3] !== 0;
+            });
+
+            if (onMouse[0] !== undefined) {
+                context.drawImage(img, 0, 0, img.width, img.height);
+                context.drawImage(onMouse[0].img, 0, 0, onMouse[0].img.width, onMouse[0].img.height);
+            } else {
+                context.drawImage(img, 0, 0, img.width, img.height);
+            }
+        }
+    });
+
+    $('#myCanvas').mousedown(function (event) {
+        onClick = !onClick;
+    });
+
+
+</script>
+</body>
+</html>
