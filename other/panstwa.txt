@@ -2,20 +2,15 @@ Albania
 Andora
 Austria
 Belgia
-Bia³oruœ
 Boœnia i Hercegowina
-Bu³garia
 Chorwacja
 Czarnogóra
 Czechy
 Dania
 Estonia
 Finlandia
-Francja
 Grecja
-Hiszpania
 Holandia
-Irlandia
 Islandia
 Kazachstan
 Liechtenstein
@@ -24,14 +19,10 @@ Luksemburg
 £otwa
 Macedonia
 Malta
-Mo³dawia
 Monako
 Niemcy
 Norwegia
 Polska
-Portugalia
-Rosja
-Rumunia
 San Marino
 Serbia
 S³owacja
@@ -42,7 +33,6 @@ Turcja
 Ukraina
 Watykan
 Wêgry
-Wielka Brytania
 W³ochy
 
 
