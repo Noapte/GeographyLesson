@@ -90,12 +90,12 @@
 
     function nextCountry() {
 
-        var length = countries.length;
-        newCountry = countries[Math.floor(Math.random() * length)];
+        var length = searchCountries.length;
+        newCountry = searchCountries[Math.floor(Math.random() * length)];
 
-        if (test.length !== countries.length) {
+        if (test.length !== searchCountries.length) {
             while (test.indexOf(newCountry) !== -1) {
-                newCountry = countries[Math.floor(Math.random() * length)];
+                newCountry = searchCountries[Math.floor(Math.random() * length)];
             }
         } else {
             alert("wygrana")
@@ -144,7 +144,7 @@
                 alert("ok");
                 nextCountry();
             } else {
-                alert("Szukany kraj to " + newCountry + ", a kliknieto na " + onMouse[0].nameAccusative);
+                alert("Szukany kraj to " + newCountry + ", a zaznaczono na " + onMouse[0].nameAccusative);
             }
         }
     });
