@@ -9,6 +9,7 @@
 </head>
 <body>
 <button id="checkCountry" style="display:inline-block" onclick="nextCountry()">check country</button>
+<button id="slides" style="display:inline-block" onclick="slides()">slides</button>
 <div id="canText" style="display:block; max-height:100px" type="text"></div>
 <canvas id="myCanvas" style="margin:20px; display:inline-block" width="400" height="400"></canvas>
 
@@ -87,9 +88,10 @@
             }
         });
     });
-
+    function slides(){
+        window.location.href = "http://localhost:4567/slides.html";
+    }
     function nextCountry() {
-
         var length = searchCountries.length;
         newCountry = searchCountries[Math.floor(Math.random() * length)];
 
@@ -144,7 +146,7 @@
                 alert("ok");
                 nextCountry();
             } else {
-                alert("Szukany kraj to " + newCountry + ", a zaznaczono na " + onMouse[0].nameAccusative);
+                alert("Szukany kraj to " + newCountry + ", a zaznaczono " + onMouse[0].nameAccusative);
             }
         }
     });
