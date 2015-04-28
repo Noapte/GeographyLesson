@@ -1,0 +1,72 @@
+﻿<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+        <meta http-equiv="Content-type" content="text/html; charset=ISO-8859-2" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+</head>
+<button  id="slides" onclick="slides()" type="submit" class="btn btn-primary">powrót do mapy</button>
+<canvas id="myCanvas" style="margin:20px; display:inline-block" width="400" height="400"></canvas>
+<div id="myModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 id="countryId" class="modal-title">Information about city</h4>
+            </div>
+            <div class="modal-body">
+                <p>info</p>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function slides() {
+        window.location.href = "http://localhost:4567/index.html";
+    } 
+
+    var canvas = document.getElementById('myCanvas');
+    var context = canvas.getContext("2d");
+    var img = new Image();
+    img.src = 'http://localhost:4567/Rumunia-slides.png';
+	
+	 var image = new Image();
+    image.src = 'http://localhost:4567/Rumunia-cities.png';
+    canvas.height = img.height;
+    canvas.width = img.width;
+    var canvasMouseX;
+    var canvasMouseY;
+    context.drawImage(img, 0, 0, img.width, img.height);
+    context.fill();
+    context.stroke();
+	var canvasMouseX;
+	var canvasMouseY;
+	
+	///--------------
+	
+	
+                    var canvas2 = document.createElement("canvas");
+                    var context2 = canvas2.getContext("2d");
+                    canvas2.height = image.height;
+                    canvas2.width = image.width;
+						image.onload = function () {
+                        context2.drawImage(image, 0, 0, image.width, image.height);
+                        context2.fill();
+                        context2.stroke();
+                    }
+
+$('#myCanvas').mousemove(function (event) {
+        canvasMouseX = event.clientX - (canvas.offsetLeft - window.pageXOffset);
+        canvasMouseY = event.clientY - (canvas.offsetTop - window.pageYOffset);
+
+    });
+    $('#myCanvas').mousedown(function (event) {
+	
+        if(context2.getImageData(canvasMouseX, canvasMouseY, 1, 1).data[3] !== 0){
+		$("#myModal").modal('show');
+		}
+    });	
+	
+</script>
