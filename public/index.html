@@ -32,7 +32,6 @@
     var newCountry = "";
     var test = [];
     var countriesBiernik = [];
-    var searchCountries = [];
     $(document).ready(function () {
 
         $.ajax({
@@ -42,18 +41,6 @@
                 var dataCountries = data.split('\r\n');
                 dataCountries.forEach(function (data) {
                     countriesBiernik.push(data);
-
-                })
-            }
-        });
-
-        $.ajax({
-            url: "countriesSearch.txt",
-            dataType: "text",
-            success: function (data) {
-                var dataCountries = data.split('\r\n');
-                dataCountries.forEach(function (data) {
-                    searchCountries.push(data);
 
                 })
             }
@@ -92,12 +79,12 @@
         window.location.href = "http://localhost:4567/slides.html";
     }
     function nextCountry() {
-        var length = searchCountries.length;
-        newCountry = searchCountries[Math.floor(Math.random() * length)];
+        var length = countries.length;
+        newCountry = countries[Math.floor(Math.random() * length)];
 
-        if (test.length !== searchCountries.length) {
+        if (test.length !== countries.length) {
             while (test.indexOf(newCountry) !== -1) {
-                newCountry = searchCountries[Math.floor(Math.random() * length)];
+                newCountry = countries[Math.floor(Math.random() * length)];
             }
         } else {
             alert("wygrana")
@@ -123,11 +110,10 @@
     context.drawImage(img, 0, 0, img.width, img.height);
     context.fill();
     context.stroke();
-    var onClick = true; //maybe unused
-    $('#myCanvas').mousemove(function (event) {
+       $('#myCanvas').mousemove(function (event) {
         canvasMouseX = event.clientX - (canvas.offsetLeft - window.pageXOffset);
         canvasMouseY = event.clientY - (canvas.offsetTop - window.pageYOffset);
-        if (onClick) {
+
             onMouse = images.filter(function (data) {
                 return data.context.getImageData(canvasMouseX, canvasMouseY, 1, 1).data[3] !== 0;
             });
@@ -137,10 +123,10 @@
             } else {
                 context.drawImage(img, 0, 0, img.width, img.height);
             }
-        }
+        
     });
     $('#myCanvas').mousedown(function (event) {
-        if (onClick && onMouse[0].name !== undefined) {
+        if (onMouse[0].name !== undefined) {
             if (onMouse[0].name === newCountry) {
                 test.push(newCountry);
                 alert("ok");
