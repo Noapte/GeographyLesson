@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="utf-8">
     <title>Lekcja geografii - tryb swobodnej mapy</title>
     <meta http-equiv="Content-type" content="text/html; charset=ISO-8859-2"/>
     <link rel="stylesheet" href="lib/bootstrap-3.2.0/dist/css/bootstrap.min.css">
@@ -8,11 +9,21 @@
     <script src="lib/bootstrap-3.2.0/dist/js/bootstrap.min.js"></script>
 </head>
 <body>
-<button id="checkCountry" onclick="nextCountry()" type="submit" class="btn btn-primary">check country</button>
-<button id="slides" onclick="slides()" type="submit" class="btn btn-primary">slides</button>
-<div id="canText" class="alert alert-info" role="alert" style="display:block; height:60px; width: 150px"></div>
-<!--<div id="canText" style="display:block; max-height:100px"></div>-->
 <canvas id="myCanvas" style="margin:20px; display:inline-block" width="400" height="400"></canvas>
+<div style="display:inline-block; position: absolute; top:0">
+    <button id="checkCountry" onclick="nextCountry()" type="submit" style="display:inline-block"
+            class="btn btn-primary">wylosuj kraj</button>
+    <button id="slides" onclick="slides()" type="submit" style="display:inline-block" class="btn btn-primary">przejdź do slajdów
+    </button>
+    <br>
+
+    <div id="canText" class="alert alert-info" role="alert" style="display:block; height:60px; width: 150px"></div>
+
+
+    <div id="listOfCountries" class="list-group">
+	<a href="#" class="list-group-item list-group-item-success active">Odgadnięte kraje</a>
+    </div>
+</div>
 
 <div id="myModal" class="modal fade">
     <div class="modal-dialog">
@@ -21,18 +32,19 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 id="countryId" class="modal-title">Confirmation</h4>
             </div>
-            <div class="modal-body">
-                <p>BLE?</p>
-            </div>
         </div>
     </div>
 </div>
+
+
 <script>
+
     var countries = [];
     var images = [];
     var newCountry = "";
     var test = [];
     var countriesBiernik = [];
+    var countryCheckEnable = false;
     $(document).ready(function () {
 
         $.ajax({
@@ -79,6 +91,7 @@
         window.location.href = "http://localhost:4567/slides.html";
     }
     function nextCountry() {
+        countryCheckEnable = true;
         var length = countries.length;
         newCountry = countries[Math.floor(Math.random() * length)];
 
@@ -125,12 +138,25 @@
         }
 
     });
+	
+	    $('#myCanvas').mouseleave(function (event) {
+        
+        context.drawImage(img, 0, 0, img.width, img.height);
+    });
+	function drawCountry(id){
+	var a  = images.filter(function (data) {
+            return data.name === id;
+        });
+	context.drawImage(img, 0, 0, img.width, img.height);
+            context.drawImage(a[0].img, 0, 0, a[0].img.width, a[0].img.height);
+	}
     $('#myCanvas').mousedown(function (event) {
-        if (onMouse[0].name !== undefined) {
+        if (onMouse[0].name !== undefined && countryCheckEnable) {
             if (onMouse[0].name === newCountry) {
                 test.push(newCountry);
                 $('#countryId').text("Ok");
                 $("#myModal").modal('show');
+                $("#listOfCountries").append('<a id=' + newCountry + ' onclick=drawCountry(this.id) href="#" class="list-group-item list-group-item-success">' + newCountry + '</a>');
                 nextCountry();
             } else {
                 $('#countryId').text("Szukany kraj to " + newCountry + ", a zaznaczono " + onMouse[0].nameAccusative);
