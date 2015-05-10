@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <title>Lekcja geografii - tryb swobodnej mapy</title>
     <meta http-equiv="Content-type" content="text/html; charset=ISO-8859-2"/>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="lib/bootstrap-3.2.0/dist/css/bootstrap.min.css">
+    <script src="lib/jquery-1.11.2/jquery.min.js"></script>
+    <script src="lib/bootstrap-3.2.0/dist/js/bootstrap.min.js"></script>
 </head>
 <body>
-<button id="checkCountry" style="display:inline-block" onclick="nextCountry()">check country</button>
-<button id="slides" style="display:inline-block" onclick="slides()">slides</button>
-<div id="canText" style="display:block; max-height:100px" type="text"></div>
+<button id="checkCountry" onclick="nextCountry()" type="submit" class="btn btn-primary">check country</button>
+<button id="slides" onclick="slides()" type="submit" class="btn btn-primary">slides</button>
+<div id="canText" class="alert alert-info" role="alert" style="display:block; height:60px; width: 150px"></div>
+<!--<div id="canText" style="display:block; max-height:100px"></div>-->
 <canvas id="myCanvas" style="margin:20px; display:inline-block" width="400" height="400"></canvas>
 
 <div id="myModal" class="modal fade">
@@ -50,7 +51,6 @@
             dataType: "text",
             success: function (data) {
                 countries = data.split('\r\n');
-                var countriesLenght = countries.length;
                 var counter = 0;
                 countries.forEach(function (data) {
                     var canvas = document.createElement("canvas");
@@ -63,7 +63,7 @@
                         context.drawImage(img, 0, 0, img.width, img.height);
                         context.fill();
                         context.stroke();
-                    }
+                    };
                     images.push({
                         img: getImage(data),
                         context: canvas.getContext("2d"),
@@ -75,7 +75,7 @@
             }
         });
     });
-    function slides(){
+    function slides() {
         window.location.href = "http://localhost:4567/slides.html";
     }
     function nextCountry() {
@@ -110,29 +110,31 @@
     context.drawImage(img, 0, 0, img.width, img.height);
     context.fill();
     context.stroke();
-       $('#myCanvas').mousemove(function (event) {
+    $('#myCanvas').mousemove(function (event) {
         canvasMouseX = event.clientX - (canvas.offsetLeft - window.pageXOffset);
         canvasMouseY = event.clientY - (canvas.offsetTop - window.pageYOffset);
 
-            onMouse = images.filter(function (data) {
-                return data.context.getImageData(canvasMouseX, canvasMouseY, 1, 1).data[3] !== 0;
-            });
-            if (onMouse[0] !== undefined) {
-                context.drawImage(img, 0, 0, img.width, img.height);
-                context.drawImage(onMouse[0].img, 0, 0, onMouse[0].img.width, onMouse[0].img.height);
-            } else {
-                context.drawImage(img, 0, 0, img.width, img.height);
-            }
-        
+        onMouse = images.filter(function (data) {
+            return data.context.getImageData(canvasMouseX, canvasMouseY, 1, 1).data[3] !== 0;
+        });
+        if (onMouse[0] !== undefined) {
+            context.drawImage(img, 0, 0, img.width, img.height);
+            context.drawImage(onMouse[0].img, 0, 0, onMouse[0].img.width, onMouse[0].img.height);
+        } else {
+            context.drawImage(img, 0, 0, img.width, img.height);
+        }
+
     });
     $('#myCanvas').mousedown(function (event) {
         if (onMouse[0].name !== undefined) {
             if (onMouse[0].name === newCountry) {
                 test.push(newCountry);
-                alert("ok");
+                $('#countryId').text("Ok");
+                $("#myModal").modal('show');
                 nextCountry();
             } else {
-                alert("Szukany kraj to " + newCountry + ", a zaznaczono " + onMouse[0].nameAccusative);
+                $('#countryId').text("Szukany kraj to " + newCountry + ", a zaznaczono " + onMouse[0].nameAccusative);
+                $("#myModal").modal('show');
             }
         }
     });
