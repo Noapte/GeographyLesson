@@ -30,7 +30,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 id="countryId" class="modal-title">Confirmation</h4>
+                <h4 id="checkIfCorrectCountry" class="modal-title">Confirmation</h4>
             </div>
         </div>
     </div>
@@ -154,12 +154,12 @@
         if (onMouse[0].name !== undefined && countryCheckEnable) {
             if (onMouse[0].name === newCountry) {
                 test.push(newCountry);
-                $('#countryId').text("Ok");
+                $('#checkIfCorrectCountry').text("Ok");
                 $("#myModal").modal('show');
                 $("#listOfCountries").append('<a id=' + newCountry + ' onclick=drawCountry(this.id) href="#" class="list-group-item list-group-item-success">' + newCountry + '</a>');
                 nextCountry();
             } else {
-                $('#countryId').text("Szukany kraj to " + newCountry + ", a zaznaczono " + onMouse[0].nameAccusative);
+                $('#checkIfCorrectCountry').text("Szukany kraj to " + newCountry + ", a zaznaczono " + onMouse[0].nameAccusative);
                 $("#myModal").modal('show');
             }
         }

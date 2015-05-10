@@ -6,7 +6,7 @@
     <script src="lib/jquery-1.11.2/jquery.min.js"></script>
     <script src="lib/bootstrap-3.2.0/dist/js/bootstrap.min.js"></script>
 </head>
-<button id="slides" onclick="slides()" type="submit" class="btn btn-primary">powrót do mapy</button>
+<button id="slides" onclick="slides()" type="submit" class="btn btn-primary">powrót do lekcji</button>
 <canvas id="myCanvas" style="margin:20px; display:inline-block" width="400" height="400"></canvas>
 <div id="myModal" class="modal fade">
     <div class="modal-dialog">
@@ -23,7 +23,7 @@
 </div>
 <script>
     function slides() {
-        window.location.href = "http://localhost:4567/index.html";
+        window.location.href = "http://localhost:4567/slides.html?id=5";
     }
 
     var canvas = document.getElementById('myCanvas');
