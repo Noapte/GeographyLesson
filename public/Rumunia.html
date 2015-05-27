@@ -8,6 +8,12 @@
 </head>
 <button id="slides" onclick="slides()" type="submit" class="btn btn-primary">powrót do lekcji</button>
 <canvas id="myCanvas" style="margin:20px; display:inline-block" width="400" height="400"></canvas>
+<div style="display:inline-block; position: absolute; top:0">
+    <div id="listOfCountries" class="list-group">
+        <a href="#" class="list-group-item list-group-item-success active">Znajdz punkty</a>
+        <a id="bukareszt" class="list-group-item"> Bukareszt </a>
+    </div>
+</div>
 <div id="myModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -29,10 +35,10 @@
     var canvas = document.getElementById('myCanvas');
     var context = canvas.getContext("2d");
     var img = new Image();
-    img.src = 'http://localhost:4567/Rumunia-slides.png';
+    img.src = 'http://localhost:4567/lessons/romania/romania-slides.png';
 
     var image = new Image();
-    image.src = 'http://localhost:4567/Rumunia-cities.png';
+    image.src = 'http://localhost:4567/lessons/romania/romania-cities.png';
     canvas.height = img.height;
     canvas.width = img.width;
     var canvasMouseX;
@@ -62,6 +68,8 @@
 
         if (context2.getImageData(canvasMouseX, canvasMouseY, 1, 1).data[3] !== 0) {
             $("#myModal").modal('show');
+            $("#bukareszt").removeClass().addClass("list-group-item list-group-item-success");
+
         }
     });
 
