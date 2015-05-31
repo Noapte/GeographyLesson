@@ -3111,7 +3111,7 @@ textarea.input-lg,select[multiple].input-lg
   cursor: not-allowed;
   filter: alpha(opacity=65);
   opacity: .65;
-  pointer-events: none;
+  pointer-events: auto;
   webkit-box-shadow: none;
 }
 .btn-default
