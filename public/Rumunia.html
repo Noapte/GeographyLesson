@@ -105,11 +105,9 @@
                     img.src = "lessons/romania/" + data + '.png';
                     canvas.height = img.height;
                     canvas.width = img.width;
-                    img.onload = function () {
-                        context.drawImage(img, 0, 0, img.width, img.height);
-                        context.fill();
-                        context.stroke();
-                    };
+                    context.drawImage(img, 0, 0, img.width, img.height);
+                    context.fill();
+                    context.stroke();
                     images.push({
                         img: getImage(data),
                         context: canvas.getContext("2d"),
