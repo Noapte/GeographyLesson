@@ -9,12 +9,51 @@
 <button id="slides" onclick="slides()" type="submit" class="btn btn-primary">powrót do lekcji</button>
 <canvas id="myCanvas" style="margin:20px; display:inline-block" width="400" height="400"></canvas>
 <div style="display:inline-block; position: absolute; top:0">
+    <br>
+    <button id="general" onclick="general()" type="button" class="btn btn-primary">ogólne informacje
+    </button>
+    <br>
+    <br>
     <div id="listOfPlaces" class="list-group">
         <a href="#" class="list-group-item list-group-item-success active">Znajdz punkty</a>
     </div>
     <button id="tests" type="button" class="btn btn-primary disabled" data-toggle="tooltip" data-placement="top"
             title="Musisz znaleźć wszystkie punkty, aby przejść do testu">przejdź do testu
     </button>
+</div>
+<div id="myModalGeneral" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Rumunia</h4>
+            </div>
+            <div class="modal-body">
+                <div style="display:inline-block; margin-right:20px">
+                    <p>flaga</p>
+                    <img id="flag" height="200" width="300">
+                </div>
+
+                <div style="display:inline-block">
+                    <p>herb</p>
+                    <img id="arms" height="200" width="200">
+                </div>
+                <br>
+                <br>
+
+                <p id="infoGeneral">info</p>
+                <br>
+                <b>informacje</b>
+                <br>
+                <br>
+                <table class="table">
+                    <tbody id="tableInfo">
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
 </div>
 <div id="myModal" class="modal fade">
     <div class="modal-dialog">
@@ -109,6 +148,28 @@
                 }
             }
         });
+
+        $.ajax({
+            url: "lessons/romania/general/info.txt",
+            dataType: "text",
+            success: function (data) {
+                $("#infoGeneral").text(data);
+                $("#flag").attr('src', 'http://localhost:4567/lessons/romania/general/flag.png');
+                $("#arms").attr('src', 'http://localhost:4567/lessons/romania/general/arms.png');
+            }
+        });
+
+        $.ajax({
+            url: "lessons/romania/general/table.txt",
+            dataType: "text",
+            success: function (data) {
+                var info = data.split('\r\n');
+                for (var i = 0; i < info.length; i++) {
+                    var split = info[i].split('-');
+                    $("#tableInfo").append('<tr><td>' + split[0] + '</td><td>' + split[1] + '</td></tr>');
+                }
+            }
+        });
     });
     function getImage(name) {
         var img = new Image();
@@ -150,5 +211,9 @@
             $("#" + onMouse[0].name).removeClass().addClass("list-group-item list-group-item-success");
         }
     });
+    function general() {
+        $("#myModalGeneral").modal('show');
+    }
+    
 
 </script>

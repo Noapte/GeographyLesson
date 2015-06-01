@@ -48,19 +48,7 @@
                 <br>
                 <br>
                 <table class="table">
-                    <tbody>
-                    <tr>
-                        <td>John</td>
-                        <td>Doe</td>
-                    </tr>
-                    <tr>
-                        <td>Mary</td>
-                        <td>Moe</td>
-                    </tr>
-                    <tr>
-                        <td>July</td>
-                        <td>Dooley</td>
-                    </tr>
+                    <tbody id="tableInfo">
                     </tbody>
                 </table>
 
@@ -168,6 +156,18 @@
                 $("#infoGeneral").text(data);
                 $("#flag").attr('src', 'http://localhost:4567/lessons/belarus/general/flag.png');
                 $("#arms").attr('src', 'http://localhost:4567/lessons/belarus/general/arms.png');
+            }
+        });
+
+        $.ajax({
+            url: "lessons/belarus/general/table.txt",
+            dataType: "text",
+            success: function (data) {
+                var info = data.split('\r\n');
+                for (var i = 0; i < info.length; i++) {
+                    var split = info[i].split('-');
+                    $("#tableInfo").append('<tr><td>' + split[0] + '</td><td>' + split[1] + '</td></tr>');
+                }
             }
         });
 
