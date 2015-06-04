@@ -9,7 +9,7 @@
     <script src="lib/bootstrap-3.2.0/dist/js/bootstrap.min.js"></script>
 </head>
 <body>
-<canvas id="myCanvas" style="margin:20px; display:inline-block" width="400" height="400"></canvas>
+<canvas id="myCanvas" style="margin:20px; display:inline-block" width="280" height="280"></canvas>
 <div style="display:inline-block; position: absolute; top:0">
     <button id="checkCountry" onclick="nextCountry()" type="submit" style="display:inline-block"
             class="btn btn-primary">wylosuj kraj</button>
@@ -38,7 +38,6 @@
 
 
 <script>
-
     var countries = [];
     var images = [];
     var newCountry = "";
@@ -68,14 +67,15 @@
                     var canvas = document.createElement("canvas");
                     var context = canvas.getContext("2d");
                     var img = new Image();
-                    img.src = data + '.png';
-                    canvas.height = img.height;
-                    canvas.width = img.width;
+
+                    canvas.height =1000;
+                    canvas.width =1000;
                     img.onload = function () {
-                        context.drawImage(img, 0, 0, img.width, img.height);
+                        context.drawImage(img, 0, 0,1000,1000);
                         context.fill();
                         context.stroke();
                     };
+                    img.src = data + '.png';
                     images.push({
                         img: getImage(data),
                         context: canvas.getContext("2d"),
@@ -116,11 +116,11 @@
     var context = canvas.getContext("2d");
     var img = new Image();
     img.src = 'http://localhost:4567/map_origin.png';
-    canvas.height = img.height;
-    canvas.width = img.width;
+    canvas.height =1000;
+    canvas.width =1000;
     var canvasMouseX;
     var canvasMouseY;
-    context.drawImage(img, 0, 0, img.width, img.height);
+    context.drawImage(img, 0, 0,1000,1000);
     context.fill();
     context.stroke();
     $('#myCanvas').mousemove(function (event) {
@@ -131,24 +131,24 @@
             return data.context.getImageData(canvasMouseX, canvasMouseY, 1, 1).data[3] !== 0;
         });
         if (onMouse[0] !== undefined) {
-            context.drawImage(img, 0, 0, img.width, img.height);
-            context.drawImage(onMouse[0].img, 0, 0, onMouse[0].img.width, onMouse[0].img.height);
+            context.drawImage(img, 0, 0, 1000, 1000);
+            context.drawImage(onMouse[0].img, 0, 0, 1000, 1000);
         } else {
-            context.drawImage(img, 0, 0, img.width, img.height);
+            context.drawImage(img, 0, 0,1000,1000);
         }
 
     });
 	
 	    $('#myCanvas').mouseleave(function (event) {
         
-        context.drawImage(img, 0, 0, img.width, img.height);
+        context.drawImage(img, 0, 0,1000,1000);
     });
 	function drawCountry(id){
 	var a  = images.filter(function (data) {
             return data.name === id;
         });
-	context.drawImage(img, 0, 0, img.width, img.height);
-            context.drawImage(a[0].img, 0, 0, a[0].img.width, a[0].img.height);
+	context.drawImage(img, 0, 0,1000,1000);
+            context.drawImage(a[0].img, 0, 0, 1000, 1000);
 	}
     $('#myCanvas').mousedown(function (event) {
         if (onMouse[0].name !== undefined && countryCheckEnable) {

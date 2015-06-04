@@ -4,8 +4,10 @@
     <meta http-equiv="Content-type" content="text/html; charset=ISO-8859-2"/>
     <link rel="stylesheet" href="lib/bootstrap-3.2.0/dist/css/bootstrap.min.css">
     <script src="lib/jquery-1.11.2/jquery.min.js"></script>
+    <script src="general.js"></script>
     <script src="lib/bootstrap-3.2.0/dist/js/bootstrap.min.js"></script>
 </head>
+
 <button id="slides" onclick="slides()" type="submit" class="btn btn-primary">powrót do lekcji</button>
 <canvas id="myCanvas" style="margin:20px; display:inline-block" width="400" height="400"></canvas>
 <div style="display:inline-block; position: absolute; top:0">
@@ -18,7 +20,7 @@
     <div id="listOfPlaces" class="list-group">
         <a href="#" class="list-group-item list-group-item-success active">Znajdz punkty</a>
     </div>
-    <button id="tests" type="button" class="btn btn-primary disabled" data-toggle="tooltip" data-placement="top"
+    <button id="tests" type="button" onclick="makeDone()" class="btn btn-primary disabled" data-toggle="tooltip" data-placement="top"
             title="Musisz znaleźć wszystkie punkty, aby przejść do testu">przejdź do testu
     </button>
 </div>
@@ -81,138 +83,5 @@
     </div>
 </div>
 <script>
-    var places = [];
-    var images = [];
-    var counter = 0;
-    var canvasMouseX;
-    var canvasMouseY;
-    var onMouse;
-    function slides() {
-        window.location.href = "http://localhost:4567/slides.html?id=3";
-    }
-    $(document).ready(function () {
-
-        $.ajax({
-            url: "lessons/belarus/places.txt",
-            dataType: "text",
-            success: function (data) {
-                var dataCountries = data.split('\r\n');
-                dataCountries.forEach(function (data) {
-                    places.push(data);
-                    $("#listOfPlaces").append('<a id=' + data + ' onclick=drawCountry(this.id) href="#" class="list-group-item">' + data + '</a>');
-                    var canvas = document.createElement("canvas");
-                    var context = canvas.getContext("2d");
-                    var img = new Image();
-                    img.src = "lessons/belarus/" + data + '.png';
-                    canvas.height = img.height;
-                    canvas.width = img.width;
-                    context.drawImage(img, 0, 0, img.width, img.height);
-                    context.fill();
-                    context.stroke();
-                    images.push({
-                        img: getImage(data),
-                        context: canvas.getContext("2d"),
-                        name: data,
-                        info: "",
-                        desc1: "",
-                        desc2: ""
-
-                    });
-
-                });
-
-            }
-        });
-
-        $.ajax({
-            url: "lessons/belarus/info.txt",
-            dataType: "text",
-            success: function (data) {
-                var info = data.split('\r\n');
-                for (var i = 0; i < images.length; i++) {
-                    images[i].info = info[i];
-                }
-            }
-        });
-
-        $.ajax({
-            url: "lessons/belarus/desc.txt",
-            dataType: "text",
-            success: function (data) {
-                var description = data.split('\r\n');
-                for (var i = 0; i < images.length; i++) {
-                    var split = description[i].split(';');
-                    images[i].desc1 = split[0];
-                    images[i].desc2 = split[1];
-                }
-            }
-        });
-        $.ajax({
-            url: "lessons/belarus/general/info.txt",
-            dataType: "text",
-            success: function (data) {
-                $("#infoGeneral").text(data);
-                $("#flag").attr('src', 'http://localhost:4567/lessons/belarus/general/flag.png');
-                $("#arms").attr('src', 'http://localhost:4567/lessons/belarus/general/arms.png');
-            }
-        });
-
-        $.ajax({
-            url: "lessons/belarus/general/table.txt",
-            dataType: "text",
-            success: function (data) {
-                var info = data.split('\r\n');
-                for (var i = 0; i < info.length; i++) {
-                    var split = info[i].split('-');
-                    $("#tableInfo").append('<tr><td>' + split[0] + '</td><td>' + split[1] + '</td></tr>');
-                }
-            }
-        });
-
-    });
-    function getImage(name) {
-        var img = new Image();
-        img.src = 'http://localhost:4567/lessons/belarus/' + name + '.png';
-        return img;
-    }
-    var canvas = document.getElementById('myCanvas');
-    var context = canvas.getContext("2d");
-    var img = new Image();
-    img.src = 'http://localhost:4567/lessons/belarus/belarus-slides.png';
-    canvas.height = img.height;
-    canvas.width = img.width;
-    context.drawImage(img, 0, 0, img.width, img.height);
-    context.fill();
-    context.stroke();
-
-
-    $('#myCanvas').mousemove(function (event) {
-        canvasMouseX = event.clientX - (canvas.offsetLeft - window.pageXOffset);
-        canvasMouseY = event.clientY - (canvas.offsetTop - window.pageYOffset);
-
-        onMouse = images.filter(function (data) {
-            return data.context.getImageData(canvasMouseX, canvasMouseY, 1, 1).data[3] !== 0;
-        });
-
-    });
-    $('#myCanvas').mousedown(function (event) {
-        if (onMouse[0].name !== undefined) {
-            if (++counter === places.length) {
-                $("#tests").removeClass().addClass("btn btn-primary");
-            }
-            $("#myModal").modal('show');
-            $("#countryId").text(onMouse[0].name);
-            $("#info").text(onMouse[0].info);
-            $("#img1").attr('src', 'http://localhost:4567/lessons/belarus/' + onMouse[0].name + '/1.jpg');
-            $("#desc1").text(onMouse[0].desc1);
-            $("#img2").attr('src', 'http://localhost:4567/lessons/belarus/' + onMouse[0].name + '/2.jpg');
-            $("#desc2").text(onMouse[0].desc2);
-            $("#" + onMouse[0].name).removeClass().addClass("list-group-item list-group-item-success");
-        }
-    });
-
-    function general() {
-        $("#myModalGeneral").modal('show');
-    }
-
+    init("belarus", 3);
 </script>
