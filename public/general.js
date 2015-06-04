@@ -1,10 +1,12 @@
 var nameOfCountry;
+var path;
 var counter = 0;
 var onMouse;
 var images = [];
 var id;
 function init(name, numberOfCountry) {
     id = numberOfCountry;
+    path = "lessons/" + name + "/";
     nameOfCountry = name;
     $(document).ready(function () {
         setAllInfoAboutCountry(images);
@@ -30,7 +32,7 @@ function setAllInfoAboutCountry(images) {
 }
 function setGeneralInformationTable() {
     $.ajax({
-        url: "lessons/" + nameOfCountry + "/general/table.txt",
+        url: path + "general/table.txt",
         dataType: "text",
         success: function (data) {
             var info = data.split('\r\n');
@@ -43,19 +45,19 @@ function setGeneralInformationTable() {
 }
 function setGeneralInformation() {
     $.ajax({
-        url: "lessons/" + nameOfCountry + "/general/info.txt",
+        url: path + "general/info.txt",
         dataType: "text",
         success: function (data) {
             $("#infoGeneral").text(data);
-            $("#flag").attr('src', 'http://localhost:4567/lessons/belarus/general/flag.png');
-            $("#arms").attr('src', 'http://localhost:4567/lessons/belarus/general/arms.png');
+            $("#flag").attr('src', path + 'general/flag.png');
+            $("#arms").attr('src', path + 'general/arms.png');
         }
     });
 }
 
 function setInfo(images) {
     $.ajax({
-        url: "lessons/" + nameOfCountry + "/info.txt",
+        url: path + "info.txt",
         dataType: "text",
         success: function (data) {
             var info = data.split('\r\n');
@@ -66,7 +68,7 @@ function setInfo(images) {
     });
 
     $.ajax({
-        url: "lessons/" + nameOfCountry + "/desc.txt",
+        url: path + "desc.txt",
         dataType: "text",
         success: function (data) {
             var description = data.split('\r\n');
@@ -82,7 +84,7 @@ function setInfo(images) {
 
 function setAll(images) {
     $.ajax({
-        url: "lessons/" + nameOfCountry + "/places.txt",
+        url: path + "places.txt",
         dataType: "text",
         success: function (data) {
             var dataCountries = data.split('\r\n');
@@ -91,7 +93,7 @@ function setAll(images) {
                 var canvas = document.createElement("canvas");
                 var context = canvas.getContext("2d");
                 var img = new Image();
-                img.src = "lessons/" + nameOfCountry + "/" + data + '.png';
+                img.src = path + data + '.png';
                 canvas.height = img.height;
                 canvas.width = img.width;
                 context.drawImage(img, 0, 0, img.width, img.height);
@@ -115,7 +117,7 @@ function setCanvas(canvas) {
 
     var context = canvas.getContext("2d");
     var img = new Image();
-    img.src = "lessons/" + nameOfCountry + "/" + nameOfCountry + "-slides.png";
+    img.src = path + nameOfCountry + "-slides.png";
     canvas.height = img.height;
     canvas.width = img.width;
     context.drawImage(img, 0, 0, img.width, img.height);
@@ -127,9 +129,9 @@ function setDescription(onMouse) {
     $("#myModal").modal('show');
     $("#countryId").text(onMouse[0].name);
     $("#info").text(onMouse[0].info);
-    $("#img1").attr('src', 'http://localhost:4567/lessons/' + nameOfCountry + '/' + onMouse[0].name + '/1.jpg');
+    $("#img1").attr('src', 'http://localhost:4567/' + path + onMouse[0].name + '/1.jpg');
     $("#desc1").text(onMouse[0].desc1);
-    $("#img2").attr('src', 'http://localhost:4567/lessons/' + nameOfCountry + '/' + onMouse[0].name + '/2.jpg');
+    $("#img2").attr('src', 'http://localhost:4567/' + path + onMouse[0].name + '/2.jpg');
     $("#desc2").text(onMouse[0].desc2);
     $("#" + onMouse[0].name).removeClass().addClass("list-group-item list-group-item-success");
 }
