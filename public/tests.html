@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Lekcja geografii - tryb swobodnej mapy</title>
+    <meta http-equiv="Content-type" content="text/html; charset=ISO-8859-2"/>
+    <link rel="stylesheet" href="lib/bootstrap-3.2.0/dist/css/bootstrap.min.css">
+    <script src="lib/jquery-1.11.2/jquery.min.js"></script>
+    <script src="lib/bootstrap-3.2.0/dist/js/bootstrap.min.js"></script>
+</head>
+<body>
+<canvas id="myCanvas" style="margin:20px; display:inline-block" width="280" height="280"></canvas>
+<div style="display:inline-block; position: absolute; top:0">
+    <button id="checkCountry" onclick="nextCountry()" type="submit" style="display:inline-block"
+            class="btn btn-primary">wylosuj kraj</button>
+    <button id="slides" onclick="slides()" type="submit" style="display:inline-block" class="btn btn-primary">przejdź do slajdów
+    </button>
+    <br>
+
+    <div id="canText" class="alert alert-info" role="alert" style="display:block; height:60px; width: 150px"></div>
+
+
+    <div id="listOfCountries" class="list-group">
+	<a href="#" class="list-group-item list-group-item-success active">Odgadnięte kraje</a>
+    </div>
+</div>
+
+<div id="myModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 id="checkIfCorrectCountry" class="modal-title">Confirmation</h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    var countries = [];
+    var images = [];
+    var newCountry = "";
+    var test = [];
+    var countriesBiernik = [];
+    var countryCheckEnable = false;
+    $(document).ready(function () {
+
+        $.ajax({
+            url: "countries-biernik.txt",
+            dataType: "text",
+            success: function (data) {
+                var dataCountries = data.split('\r\n');
+                dataCountries.forEach(function (data) {
+                    countriesBiernik.push(data);
+
+                })
+            }
+        });
+        $.ajax({
+            url: "countries.txt",
+            dataType: "text",
+            success: function (data) {
+                countries = data.split('\r\n');
+                var counter = 0;
+                countries.forEach(function (data) {
+                    var canvas = document.createElement("canvas");
+                    var context = canvas.getContext("2d");
+                    var img = new Image();
+
+                    canvas.height =600;
+                    canvas.width =600;
+                    img.onload = function () {
+                        context.drawImage(img, 0, 0,600,600);
+                        context.fill();
+                        context.stroke();
+                    };
+                    img.src = data + '.png';
+                    images.push({
+                        img: getImage(data),
+                        context: canvas.getContext("2d"),
+                        name: data,
+                        nameAccusative: countriesBiernik[counter]
+                    });
+                    counter++;
+                });
+            }
+        });
+    });
+    function slides() {
+        window.location.href = "http://localhost:4567/index.html";
+    }
+    function nextCountry() {
+        countryCheckEnable = true;
+        var length = countries.length;
+        newCountry = countries[Math.floor(Math.random() * length)];
+
+        if (test.length !== countries.length) {
+            while (test.indexOf(newCountry) !== -1) {
+                newCountry = countries[Math.floor(Math.random() * length)];
+            }
+        } else {
+            alert("wygrana")
+        }
+
+        $("#canText").text(newCountry);
+    }
+    function getImage(name) {
+        var img = new Image();
+        img.src = 'http://localhost:4567/' + name + '.png';
+        return img;
+    }
+
+    var onMouse;
+    var canvas = document.getElementById('myCanvas');
+    var context = canvas.getContext("2d");
+    var img = new Image();
+    img.src = 'http://localhost:4567/map_origin.png';
+    canvas.height =600;
+    canvas.width =600;
+    var canvasMouseX;
+    var canvasMouseY;
+    context.drawImage(img, 0, 0,600,600);
+    context.fill();
+    context.stroke();
+    $('#myCanvas').mousemove(function (event) {
+        canvasMouseX = event.clientX - (canvas.offsetLeft - window.pageXOffset);
+        canvasMouseY = event.clientY - (canvas.offsetTop - window.pageYOffset);
+
+        onMouse = images.filter(function (data) {
+            return data.context.getImageData(canvasMouseX, canvasMouseY, 1, 1).data[3] !== 0;
+        });
+        if (onMouse[0] !== undefined) {
+            context.drawImage(img, 0, 0, 600, 600);
+            context.drawImage(onMouse[0].img, 0, 0, 600, 600);
+        } else {
+            context.drawImage(img, 0, 0,600,600);
+        }
+
+    });
+	
+	    $('#myCanvas').mouseleave(function (event) {
+        
+        context.drawImage(img, 0, 0,600,600);
+    });
+	function drawCountry(id){
+	var a  = images.filter(function (data) {
+            return data.name === id;
+        });
+	context.drawImage(img, 0, 0,600,600);
+            context.drawImage(a[0].img, 0, 0, 600, 600);
+	}
+    $('#myCanvas').mousedown(function (event) {
+        if (onMouse[0].name !== undefined && countryCheckEnable) {
+            if (onMouse[0].name === newCountry) {
+                test.push(newCountry);
+                $('#checkIfCorrectCountry').text("Ok");
+                $("#myModal").modal('show');
+                $("#listOfCountries").append('<a id=' + newCountry + ' onclick=drawCountry(this.id) href="#" class="list-group-item list-group-item-success">' + newCountry + '</a>');
+                nextCountry();
+            } else {
+                $('#checkIfCorrectCountry').text("Szukany kraj to " + newCountry + ", a zaznaczono " + onMouse[0].nameAccusative);
+                $("#myModal").modal('show');
+            }
+        }
+    });
+</script>
+</body>
+</html>

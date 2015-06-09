@@ -1,169 +1,154 @@
-<!DOCTYPE html>
-<html>
 <head>
+    <title>Lekcja geografii - slajdy</title>
     <meta charset="utf-8">
-    <title>Lekcja geografii - tryb swobodnej mapy</title>
-    <meta http-equiv="Content-type" content="text/html; charset=ISO-8859-2"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="lib/bootstrap-3.2.0/dist/css/bootstrap.min.css">
     <script src="lib/jquery-1.11.2/jquery.min.js"></script>
     <script src="lib/bootstrap-3.2.0/dist/js/bootstrap.min.js"></script>
+    <style>
+        .carousel-inner > .item > img,
+        .carousel-inner > .item > a > img {
+            width: 70%;
+            margin: auto;
+        }
+    </style>
 </head>
-<body>
-<canvas id="myCanvas" style="margin:20px; display:inline-block" width="280" height="280"></canvas>
-<div style="display:inline-block; position: absolute; top:0">
-    <button id="checkCountry" onclick="nextCountry()" type="submit" style="display:inline-block"
-            class="btn btn-primary">wylosuj kraj</button>
-    <button id="slides" onclick="slides()" type="submit" style="display:inline-block" class="btn btn-primary">przejdź do slajdów
-    </button>
+<!--<button id="slides"  type="submit" class="btn btn-primary">powrót do mapy</button>-->
+
+<div class="container" style="margin:20px; display:inline-block">
     <br>
 
-    <div id="canText" class="alert alert-info" role="alert" style="display:block; height:60px; width: 150px"></div>
+    <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="false">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#myCarousel" data-slide-to="1"></li>
+            <li data-target="#myCarousel" data-slide-to="2"></li>
+            <li data-target="#myCarousel" data-slide-to="3"></li>
+            <li data-target="#myCarousel" data-slide-to="4"></li>
+            <li data-target="#myCarousel" data-slide-to="5"></li>
+        </ol>
 
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner" role="listbox">
+
+            <div class="item active">
+                <img src="map_origin.png" alt="Chania">
+
+                <div class="carousel-caption">
+
+                    <h1>Lekcja geografii</h1>
+                </div>
+            </div>
+
+            <div class="item">
+                <img src="slides_Rosja.png" alt="Chania">
+
+                <div class="carousel-caption">
+
+                    <h1>Rosja</h1>
+                    <button id="Rosja" onclick="goToLesson(this.id)" type="submit" class="btn btn-primary">przejdź do
+                        lekcji
+                    </button>
+                </div>
+            </div>
+
+            <div class="item">
+                <img id="image1" src="slides_Ukraina.png" alt="Chania">
+
+
+                <div class="carousel-caption">
+                    <h1>Ukraina</h1>
+                    <button id="Ukraina" onclick="goToLesson(this.id)" type="submit" class="btn btn-primary">przejdź do
+                        lekcji
+                    </button>
+                </div>
+            </div>
+
+            <div class="item">
+                <img src="slides_Białoruś.png" alt="Flower">
+
+                <div class="carousel-caption">
+                    <h1>Białoruś</h1>
+                    <button id="Bialorus" onclick="goToLesson(this.id)" type="submit" class="btn btn-primary">przejdź do
+                        lekcji
+                    </button>
+                </div>
+            </div>
+
+            <div class="item">
+                <img src="slides_Mołdawia.png" alt="Flower">
+
+                <div class="carousel-caption">
+                    <h1>Mołdawia</h1>
+                    <button id="Moldawia" onclick="goToLesson(this.id)" type="submit" class="btn btn-primary">przejdź do
+                        lekcji
+                    </button>
+                </div>
+            </div>
+            <div class="item">
+                <img src="slides_Rumunia.png" alt="Flower">
+
+                <div class="carousel-caption">
+                    <h1>Rumunia</h1>
+                    <button id="Rumunia" onclick="goToLesson(this.id)" type="submit" class="btn btn-primary">przejdź do
+                        lekcji
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Left and right controls -->
+        <a id="left" class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a id="right" class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+</div>
+<div style="display:inline-block; position: absolute; top:0">
+    <br>
+    <br>
 
     <div id="listOfCountries" class="list-group">
-	<a href="#" class="list-group-item list-group-item-success active">Odgadnięte kraje</a>
+        <a href="#" class="list-group-item list-group-item-success active">Przejdź lekcje</a>
+        <a id='country_1' href="#" class="list-group-item">Rosja</a>
+        <a id='country_2' href="#" class="list-group-item">Ukraina</a>
+        <a id='country_3' href="#" class="list-group-item">Białoruś</a>
+        <a id='country_4' href="#" class="list-group-item">Mołdawia</a>
+        <a id='country_5' href="#" class="list-group-item">Rumunia</a>
+
     </div>
+    <button id="tests" type="button" onclick="slides()" class="btn btn-primary disabled" data-toggle="tooltip"
+            data-placement="top"
+            title="Musisz znaleźć wszystkie punkty, aby przejść do testu">przejdź do testu
+    </button>
 </div>
-
-<div id="myModal" class="modal fade">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 id="checkIfCorrectCountry" class="modal-title">Confirmation</h4>
-            </div>
-        </div>
-    </div>
-</div>
-
-
 <script>
-    var countries = [];
-    var images = [];
-    var newCountry = "";
-    var test = [];
-    var countriesBiernik = [];
-    var countryCheckEnable = false;
+
     $(document).ready(function () {
-
-        $.ajax({
-            url: "countries-biernik.txt",
-            dataType: "text",
-            success: function (data) {
-                var dataCountries = data.split('\r\n');
-                dataCountries.forEach(function (data) {
-                    countriesBiernik.push(data);
-
-                })
+        var getInfo = window.location.href.split('?')[1];
+        var info = getInfo.split("&");
+        if (info) {
+            $('#myCarousel').carousel(Number(info[0].split("=")[1]));
+            var arr = $.unique((document.cookie).split(","));
+            for (var i = 0; i < arr.length; i++) {
+                $("#country_" + arr[i]).removeClass().addClass("list-group-item list-group-item-success");
             }
-        });
-        $.ajax({
-            url: "countries.txt",
-            dataType: "text",
-            success: function (data) {
-                countries = data.split('\r\n');
-                var counter = 0;
-                countries.forEach(function (data) {
-                    var canvas = document.createElement("canvas");
-                    var context = canvas.getContext("2d");
-                    var img = new Image();
-
-                    canvas.height =1000;
-                    canvas.width =1000;
-                    img.onload = function () {
-                        context.drawImage(img, 0, 0,1000,1000);
-                        context.fill();
-                        context.stroke();
-                    };
-                    img.src = data + '.png';
-                    images.push({
-                        img: getImage(data),
-                        context: canvas.getContext("2d"),
-                        name: data,
-                        nameAccusative: countriesBiernik[counter]
-                    });
-                    counter++;
-                });
-            }
-        });
+            if (arr.length === 6)
+                $("#tests").removeClass().addClass("btn btn-primary");
+        }
     });
+
     function slides() {
-        window.location.href = "http://localhost:4567/slides.html";
+        window.location.href = "http://localhost:4567/tests.html";
     }
-    function nextCountry() {
-        countryCheckEnable = true;
-        var length = countries.length;
-        newCountry = countries[Math.floor(Math.random() * length)];
-
-        if (test.length !== countries.length) {
-            while (test.indexOf(newCountry) !== -1) {
-                newCountry = countries[Math.floor(Math.random() * length)];
-            }
-        } else {
-            alert("wygrana")
-        }
-
-        $("#canText").text(newCountry);
-    }
-    function getImage(name) {
-        var img = new Image();
-        img.src = 'http://localhost:4567/' + name + '.png';
-        return img;
+    function goToLesson(id) {
+        window.location.href = "http://localhost:4567/" + id + ".html";
     }
 
-    var onMouse;
-    var canvas = document.getElementById('myCanvas');
-    var context = canvas.getContext("2d");
-    var img = new Image();
-    img.src = 'http://localhost:4567/map_origin.png';
-    canvas.height =1000;
-    canvas.width =1000;
-    var canvasMouseX;
-    var canvasMouseY;
-    context.drawImage(img, 0, 0,1000,1000);
-    context.fill();
-    context.stroke();
-    $('#myCanvas').mousemove(function (event) {
-        canvasMouseX = event.clientX - (canvas.offsetLeft - window.pageXOffset);
-        canvasMouseY = event.clientY - (canvas.offsetTop - window.pageYOffset);
-
-        onMouse = images.filter(function (data) {
-            return data.context.getImageData(canvasMouseX, canvasMouseY, 1, 1).data[3] !== 0;
-        });
-        if (onMouse[0] !== undefined) {
-            context.drawImage(img, 0, 0, 1000, 1000);
-            context.drawImage(onMouse[0].img, 0, 0, 1000, 1000);
-        } else {
-            context.drawImage(img, 0, 0,1000,1000);
-        }
-
-    });
-	
-	    $('#myCanvas').mouseleave(function (event) {
-        
-        context.drawImage(img, 0, 0,1000,1000);
-    });
-	function drawCountry(id){
-	var a  = images.filter(function (data) {
-            return data.name === id;
-        });
-	context.drawImage(img, 0, 0,1000,1000);
-            context.drawImage(a[0].img, 0, 0, 1000, 1000);
-	}
-    $('#myCanvas').mousedown(function (event) {
-        if (onMouse[0].name !== undefined && countryCheckEnable) {
-            if (onMouse[0].name === newCountry) {
-                test.push(newCountry);
-                $('#checkIfCorrectCountry').text("Ok");
-                $("#myModal").modal('show');
-                $("#listOfCountries").append('<a id=' + newCountry + ' onclick=drawCountry(this.id) href="#" class="list-group-item list-group-item-success">' + newCountry + '</a>');
-                nextCountry();
-            } else {
-                $('#checkIfCorrectCountry').text("Szukany kraj to " + newCountry + ", a zaznaczono " + onMouse[0].nameAccusative);
-                $("#myModal").modal('show');
-            }
-        }
-    });
 </script>
-</body>
-</html>

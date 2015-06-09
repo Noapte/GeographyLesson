@@ -14,11 +14,13 @@ function init(name, numberOfCountry) {
     manageCanvas(images);
 }
 function slides() {
-    window.location.href = "http://localhost:4567/slides.html?id=" + id;
+    window.location.href = "http://localhost:4567/index.html?id=" + id + "&done=false";
 }
 
 function makeDone() {
-    window.location.href = "http://localhost:4567/slides.html?id=" + id + "&done=true";
+    var cookie = document.cookie;
+    document.cookie  = cookie  + id + ",";
+    window.location.href = "http://localhost:4567/index.html?id=" + id + "&done=true";
 }
 function general() {
     $("#myModalGeneral").modal('show');
@@ -89,7 +91,7 @@ function setAll(images) {
         success: function (data) {
             var dataCountries = data.split('\r\n');
             dataCountries.forEach(function (data) {
-                $("#listOfPlaces").append('<a id=' + data + ' onclick=drawCountry(this.id) href="#" class="list-group-item">' + data + '</a>');
+                $("#listOfPlaces").append('<a id=' + data + ' href="#" class="list-group-item">' + data + '</a>');
                 var canvas = document.createElement("canvas");
                 var context = canvas.getContext("2d");
                 var img = new Image();
@@ -127,7 +129,7 @@ function setCanvas(canvas) {
 
 function setDescription(onMouse) {
     $("#myModal").modal('show');
-    $("#countryId").text(onMouse[0].name);
+    $("#placeId").text(onMouse[0].name);
     $("#info").text(onMouse[0].info);
     $("#img1").attr('src', 'http://localhost:4567/' + path + onMouse[0].name + '/1.jpg');
     $("#desc1").text(onMouse[0].desc1);

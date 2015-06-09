@@ -22,7 +22,8 @@
     "body-parser": "^1.1.2",
     "errorhandler": "^1.0.1",
     "method-override": "^1.0.0",
-	"express-session": "^1.7.6"
+	"express-session": "^1.7.6",
+	"underscore": "^1.1"
   },
   "bin": {
     "simple-server": "./start.js"

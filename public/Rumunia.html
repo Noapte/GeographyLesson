@@ -7,7 +7,6 @@
     <script src="lib/bootstrap-3.2.0/dist/js/bootstrap.min.js"></script>
     <script src="general.js"></script>
 </head>
-<button id="slides" onclick="slides()" type="submit" class="btn btn-primary">powrót do lekcji</button>
 <canvas id="myCanvas" style="margin:20px; display:inline-block" width="400" height="400"></canvas>
 <div style="display:inline-block; position: absolute; top:0">
     <br>
@@ -18,8 +17,12 @@
     <div id="listOfPlaces" class="list-group">
         <a href="#" class="list-group-item list-group-item-success active">Znajdz punkty</a>
     </div>
-    <button id="tests" type="button" class="btn btn-primary disabled" data-toggle="tooltip" data-placement="top"
-            title="Musisz znaleźć wszystkie punkty, aby przejść do testu">przejdź do testu
+    <div>
+        <button id="slides" onclick="slides()" style="display:inline" type="submit" class="btn btn-primary">powrót do lekcji</button>
+    </div>
+    <br>
+    <button id="tests" onclick="makeDone()" type="button" onclick="makeDone()" class="btn btn-primary disabled" data-toggle="tooltip" data-placement="top"
+            title="Musisz znaleźć wszystkie punkty, aby przejść do następnej lekcji">zalicz lekcje i przejdź do slajdów
     </button>
 </div>
 <div id="modals"></div>
