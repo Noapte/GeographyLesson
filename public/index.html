@@ -1,154 +1,31 @@
+<!DOCTYPE html>
+<html>
 <head>
-    <title>Lekcja geografii - slajdy</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="lib/bootstrap-3.2.0/dist/css/bootstrap.min.css">
-    <script src="lib/jquery-1.11.2/jquery.min.js"></script>
-    <script src="lib/bootstrap-3.2.0/dist/js/bootstrap.min.js"></script>
-    <style>
-        .carousel-inner > .item > img,
-        .carousel-inner > .item > a > img {
-            width: 70%;
-            margin: auto;
-        }
-    </style>
+    <meta http-equiv="Content-type" content="text/html; charset=ISO-8859-2" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 </head>
-<!--<button id="slides"  type="submit" class="btn btn-primary">powrót do mapy</button>-->
-
-<div class="container" style="margin:20px; display:inline-block">
-    <br>
-
-    <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="false">
-        <!-- Indicators -->
-        <ol class="carousel-indicators">
-            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-            <li data-target="#myCarousel" data-slide-to="1"></li>
-            <li data-target="#myCarousel" data-slide-to="2"></li>
-            <li data-target="#myCarousel" data-slide-to="3"></li>
-            <li data-target="#myCarousel" data-slide-to="4"></li>
-            <li data-target="#myCarousel" data-slide-to="5"></li>
-        </ol>
-
-        <!-- Wrapper for slides -->
-        <div class="carousel-inner" role="listbox">
-
-            <div class="item active">
-                <img src="map_origin.png" alt="Chania">
-
-                <div class="carousel-caption">
-
-                    <h1>Lekcja geografii</h1>
-                </div>
-            </div>
-
-            <div class="item">
-                <img src="slides_Rosja.png" alt="Chania">
-
-                <div class="carousel-caption">
-
-                    <h1>Rosja</h1>
-                    <button id="Rosja" onclick="goToLesson(this.id)" type="submit" class="btn btn-primary">przejdź do
-                        lekcji
-                    </button>
-                </div>
-            </div>
-
-            <div class="item">
-                <img id="image1" src="slides_Ukraina.png" alt="Chania">
-
-
-                <div class="carousel-caption">
-                    <h1>Ukraina</h1>
-                    <button id="Ukraina" onclick="goToLesson(this.id)" type="submit" class="btn btn-primary">przejdź do
-                        lekcji
-                    </button>
-                </div>
-            </div>
-
-            <div class="item">
-                <img src="slides_Białoruś.png" alt="Flower">
-
-                <div class="carousel-caption">
-                    <h1>Białoruś</h1>
-                    <button id="Bialorus" onclick="goToLesson(this.id)" type="submit" class="btn btn-primary">przejdź do
-                        lekcji
-                    </button>
-                </div>
-            </div>
-
-            <div class="item">
-                <img src="slides_Mołdawia.png" alt="Flower">
-
-                <div class="carousel-caption">
-                    <h1>Mołdawia</h1>
-                    <button id="Moldawia" onclick="goToLesson(this.id)" type="submit" class="btn btn-primary">przejdź do
-                        lekcji
-                    </button>
-                </div>
-            </div>
-            <div class="item">
-                <img src="slides_Rumunia.png" alt="Flower">
-
-                <div class="carousel-caption">
-                    <h1>Rumunia</h1>
-                    <button id="Rumunia" onclick="goToLesson(this.id)" type="submit" class="btn btn-primary">przejdź do
-                        lekcji
-                    </button>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- Left and right controls -->
-        <a id="left" class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a id="right" class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
+<body>
+<div id="a">
+    <div id="b">
     </div>
-</div>
-<div style="display:inline-block; position: absolute; top:0">
-    <br>
-    <br>
-
-    <div id="listOfCountries" class="list-group">
-        <a href="#" class="list-group-item list-group-item-success active">Przejdź lekcje</a>
-        <a id='country_1' href="#" class="list-group-item">Rosja</a>
-        <a id='country_2' href="#" class="list-group-item">Ukraina</a>
-        <a id='country_3' href="#" class="list-group-item">Białoruś</a>
-        <a id='country_4' href="#" class="list-group-item">Mołdawia</a>
-        <a id='country_5' href="#" class="list-group-item">Rumunia</a>
-
-    </div>
-    <button id="tests" type="button" onclick="slides()" class="btn btn-primary disabled" data-toggle="tooltip"
-            data-placement="top"
-            title="Musisz znaleźć wszystkie punkty, aby przejść do testu">przejdź do testu
-    </button>
 </div>
 <script>
 
-    $(document).ready(function () {
-        var getInfo = window.location.href.split('?')[1];
-        var info = getInfo.split("&");
-        if (info) {
-            $('#myCarousel').carousel(Number(info[0].split("=")[1]));
-            var arr = $.unique((document.cookie).split(","));
-            for (var i = 0; i < arr.length; i++) {
-                $("#country_" + arr[i]).removeClass().addClass("list-group-item list-group-item-success");
-            }
-            if (arr.length === 6)
-                $("#tests").removeClass().addClass("btn btn-primary");
-        }
-    });
+    function appendChildren() {
+        var allDivs = document.getElementsByTagName("div");
+        var j = allDivs.length;
 
-    function slides() {
-        window.location.href = "http://localhost:4567/tests.html";
+       for (var i = 0; i < j; i++) {
+           var newDiv = document.createElement("div");
+           var div = allDivs[i];
+          div.appendChild(newDiv);
+          console.log(div)
+       }
     }
-    function goToLesson(id) {
-        window.location.href = "http://localhost:4567/" + id + ".html";
-    }
-
+    appendChildren();
 </script>
+</body>
+</html>
